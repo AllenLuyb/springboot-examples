@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.domain.UserEntity">
+        <id column="id" property="id" jdbcType="INT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,user_name,pass_word
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List"/>
+        from users
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM users where id = #{id}
+    </select>
+    
+    <insert id="insertOne" parameterType="com.example.domain.UserEntity">
+        INSERT INTO users(user_name,pass_word)values(#{userName},#{passWord})
+    </insert>
+
+    <update id="updateOne" parameterType="com.example.domain.UserEntity">
+        UPDATE users set
+          user_name = #{userName},
+          <if test="passWord != null">pass_word = #{passWord}</if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOne" parameterType="java.lang.Integer">
+        DELETE users from where id = #{id}
+    </delete>
+</mapper>
